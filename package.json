@@ -6,12 +6,13 @@
   "license": "MIT",
   "scripts": {
     "start": "parcel serve src/pages/pixi.pug --open",
-    "build": "parcel build src/pages/pixi.pug --no-source-maps",
+    "build": "parcel build src/pages/pixi.pug",
+    "dev": "yarn build && yarn start",
     "deploy": "yarn build && yarn copy",
     "copy": "source .env && rsync -qazP $DEPLOY_FILES $DEPLOY_TARGET"
   },
   "dependencies": {
-    "fpsmeter": "0.3.1",
+    "fpsmeter": "^0.3.1",
     "pixi.js": "7.1.4"
   },
   "resolutions": {

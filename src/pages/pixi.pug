@@ -1,7 +1,11 @@
 extends /layouts/main.pug
+include /partials/pixi-selector
 
 block title
   title PixiJS — WebGL Libraries Benchmark
 
+block main 
+  +pixi-selector()
+
 block scripts
-  script(type="module", src="../scripts/pixi.js")
+  script(type="module", src="../scripts/pixi.ts")

@@ -23,6 +23,28 @@
   pointer-events: none;
 }
 
+.pixi-selector {
+  display: flex;
+  align-items: baseline;
+  margin-bottom: 0.5em;
+}
+
+.pixi-selector>span {
+  margin-right: 1em;
+  font-size: 1.2em;
+}
+
+.pixi-selector>a {
+  margin-right: 0.5em;
+}
+
+.pixi-selector>a.selected {
+  color: #333;
+  border-bottom-color: #fff;
+  cursor: default;
+  pointer-events: none;
+}
+
 .meter>* {
   box-sizing: content-box;
 }

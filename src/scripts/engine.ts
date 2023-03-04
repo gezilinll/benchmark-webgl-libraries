@@ -1,14 +1,23 @@
-import "fpsmeter";
+import 'fpsmeter'
 
 class Engine {
+  content: any;
+  meterContainer: HTMLElement;
+  width: number;
+  height: number;
+  cancelAnimationFrame: any;
+  countLinks: NodeListOf<Element>;
+  count: { index: number; value: number; };
+  meter!: any;
+
   constructor() {
-    this.content = document.querySelector("main");
-    this.meterContainer = this.content.querySelector(".meter");
+    this.content = document.querySelector("main")!;
+    this.meterContainer = this.content.querySelector(".meter")!;
     this.countLinks = this.content.querySelectorAll(".count-selector > a");
 
     this.width = Math.min(this.content.clientWidth, 1000);
     this.height = this.content.clientHeight * 0.75;
-    this.count;
+    this.count = { index: 1, value: 1000 };
 
     this.initFpsmeter();
     this.initSettings();
@@ -18,14 +27,19 @@ class Engine {
     this.cancelAnimationFrame =
       (
         window.cancelAnimationFrame ||
+        //@ts-ignore
         window.webkitCancelRequestAnimationFrame ||
+        //@ts-ignore
         window.mozCancelRequestAnimationFrame ||
+        //@ts-ignore
         window.oCancelRequestAnimationFrame ||
+        //@ts-ignore
         window.msCancelRequestAnimationFrame
       )?.bind(window) || clearTimeout;
   }
 
   initFpsmeter() {
+    //@ts-ignore
     this.meter = new window.FPSMeter(this.meterContainer, {
       graph: 1,
       heat: 1,
@@ -39,15 +53,19 @@ class Engine {
   }
 
   initSettings() {
-    const count = JSON.parse(localStorage.getItem("count"));
+    let localCount = localStorage.getItem("count");
+    if (localCount) {
+      this.count = JSON.parse(localCount);
+    } else {
+      this.count = { index: 1, value: 1000 };
+    }
 
-    this.count = count || { index: 1, value: 1000 };
     localStorage.setItem("count", JSON.stringify(this.count));
 
-    this.countLinks.forEach((link, index) => {
+    this.countLinks.forEach((link: any, index) => {
       this.countLinks[this.count.index].classList.toggle("selected", true);
 
-      link.addEventListener("click", (event) => {
+      link.addEventListener("click", (event: any) => {
         event.preventDefault();
         event.stopPropagation();
 
@@ -66,14 +84,14 @@ class Engine {
     const menuLinks = document.querySelectorAll("header > menu > a");
     const { href } = window.location;
 
-    [...menuLinks].forEach((ml) => {
+    [...menuLinks].forEach((ml: any) => {
       if (ml.href === href) {
         ml.classList.add("disabled");
       }
     });
   }
 
-  render() {}
+  render() { }
 }
 
 export default Engine;
