@@ -6,7 +6,7 @@ class PixiEngine extends Engine {
   constructor() {
     super();
 
-    this.renderMode = { index: 2, value: "SpriteContainer" };
+    this.renderMode = { index: 0, value: "Origin" };
     this.initRenderModeSettings();
 
     // support Hi-DPI
@@ -43,7 +43,7 @@ class PixiEngine extends Engine {
     let spritesContainer: PIXI.ParticleContainer | null = null;
     if (this.renderMode.value == "SpriteContainer") {
       spritesContainer = new PIXI.ParticleContainer(this.count.value, {
-        scale: false,
+        scale: true,
         position: true,
         rotation: false,
         uvs: false,
@@ -74,14 +74,24 @@ class PixiEngine extends Engine {
             spritesContainer!.addChild(sprite);
           }
         }
+      } else if (this.renderType.value == "Image") {
+        const texture = PIXI.Texture.from(this.imageUrl);
+        var sprite = new PIXI.Sprite(texture);
+        sprite.position.set(element.x, element.y);
+        sprite.scale.set(element.width / this.imageW, element.heigh / this.imageH);
+        element.obj = sprite;
+        if (this.renderMode.value == "SpriteContainer") {
+          spritesContainer!.addChild(sprite);
+        } else {
+          this.app.stage.addChild(sprite);
+        }
       } else if (this.renderType.value == "Text") {
         const basicText = new PIXI.Text('quick brown fox');
         basicText.x = element.x;
         basicText.y = element.y;
         const style = new PIXI.TextStyle({
           fontSize: 12,
-          wordWrap: true,
-          wordWrapWidth: element.width,
+          wordWrap: false,
         });
         basicText.style = style;
         if (this.renderMode.value == "Origin") {

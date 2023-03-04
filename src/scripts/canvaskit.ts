@@ -12,6 +12,7 @@ class CanvasKitEngine extends Engine {
   fillPaint: any;
   textPaint: any;
   textFont: any;
+  skImage: any;
   request: number = 0;
 
   constructor() {
@@ -51,6 +52,9 @@ class CanvasKitEngine extends Engine {
     this.textPaint.setAntiAlias(true);
     this.textPaint.setColor(this.CanvasKit.parseColorString("#000000"));
     this.textPaint.setStyle(this.CanvasKit.PaintStyle.Fill);
+
+    let imageData = await fetch(this.imageUrl).then((response) => response.arrayBuffer());
+    this.skImage = this.CanvasKit.MakeImageFromEncoded(imageData);
   }
 
   animate() {
@@ -67,6 +71,10 @@ class CanvasKitEngine extends Engine {
         canvas.drawRect4f(element.x, element.y, element.x + element.width, element.y + element.heigh, this.fillPaint);
       } else if (this.renderType.value == "Text") {
         canvas.drawText("quick brown fox", element.x, element.y, this.textPaint, this.textFont);
+      } else if (this.renderType.value == "Image") {
+        let srcRect = this.CanvasKit.XYWHRect(0, 0, this.imageW, this.imageH);
+        let dstRect = this.CanvasKit.XYWHRect(element.x, element.y, element.width, element.heigh);
+        canvas.drawImageRect(this.skImage, srcRect, dstRect, this.fillPaint, false);
       }
       if (this.renderMode.value == "Immediately") {
         this.surface.flush();
@@ -85,6 +93,7 @@ class CanvasKitEngine extends Engine {
     this.surface.getCanvas().clear(this.CanvasKit.WHITE);
     this.cancelAnimationFrame(this.request);
     this.initDrawElements();
+
     this.request = window.requestAnimationFrame(() => this.animate());
   }
 }

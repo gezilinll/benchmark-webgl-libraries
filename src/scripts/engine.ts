@@ -21,9 +21,13 @@ class Engine {
   renderMode: { index: number; value: string; };
   renderTypeLinks: NodeListOf<Element>;
   renderType: { index: number; value: string; };
+  lastRenderType: { index: number; value: string; };
   meter!: any;
 
   drawElements: Array<XElement> = new Array();
+  imageUrl: string = "https://images.unsplash.com/photo-1593085512500-5d55148d6f0d";
+  imageW: number = 2334;
+  imageH: number = 2334;
 
   constructor() {
     this.content = document.querySelector("main")!;
@@ -36,6 +40,7 @@ class Engine {
     this.renderMode = { index: 1, value: "Error" };
     this.renderTypeLinks = this.content.querySelectorAll(".render-type-selector > a");
     this.renderType = { index: 0, value: "Rect" };
+    this.lastRenderType = { index: -1, value: "None" };
 
     this.initFpsmeter();
     this.initSettings();
@@ -102,10 +107,10 @@ class Engine {
     if (localRenderType) {
       this.renderType = JSON.parse(localRenderType);
     } else {
-      this.renderType = { index: 1, value: "Rect" };
+      this.renderType = { index: 0, value: "Rect" };
     }
     if (this.renderType.index < 0 || this.count.index >= 3) {
-      this.renderType = { index: 1, value: "Rect" };
+      this.renderType = { index: 0, value: "Rect" };
     }
     this.renderTypeLinks.forEach((link: any, index) => {
       this.renderTypeLinks[this.renderType.index].classList.toggle("selected", true);
@@ -121,6 +126,8 @@ class Engine {
         localStorage.setItem("renderType", JSON.stringify(this.renderType));
 
         this.render();
+
+        this.lastRenderType = this.renderType;
       });
     });
   }
@@ -155,22 +162,24 @@ class Engine {
 
   initDrawElements() {
     this.drawElements = [];
-    let localElements = localStorage.getItem("drawElements");
-    if (localElements) {
-      this.drawElements = JSON.parse(localElements);
+    if (this.lastRenderType.value == this.renderType.value) {
+      let localElements = localStorage.getItem("drawElements");
+      if (localElements) {
+        this.drawElements = JSON.parse(localElements);
+      }
     }
     if (this.drawElements.length < this.count.value) {
       for (let i = this.drawElements.length; i < this.count.value; i++) {
         const x = Math.floor(Math.random() * this.width);
         const y = Math.floor(Math.random() * this.height);
-        const size = 10 + Math.floor(Math.random() * 50);
+        const size = 10 + Math.floor(Math.random() * (this.renderType.value == "Image" ? 100 : 50));
         const speed = 1 + Math.floor(Math.random() * 3);
         let element = new XElement();
         element.x = x;
         element.y = y;
         element.speed = speed;
         element.width = size;
-        element.heigh = size;
+        element.heigh = this.renderType.value == "Image" ? size / (this.imageW / this.imageH) : size;
         this.drawElements[i] = element;
       }
     }
