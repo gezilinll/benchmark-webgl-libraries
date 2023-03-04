@@ -12,6 +12,7 @@
     "copy": "source .env && rsync -qazP $DEPLOY_FILES $DEPLOY_TARGET"
   },
   "dependencies": {
+    "fabric": "^5.3.0",
     "fpsmeter": "^0.3.1",
     "pixi.js": "7.1.4"
   },
@@ -20,6 +21,7 @@
   },
   "devDependencies": {
     "@parcel/transformer-pug": "2.8.3",
+    "@types/fabric": "^5.3.0",
     "@types/three": "^0.149.0",
     "buffer": "^5.5.0",
     "canvaskit-wasm": "^0.38.0",

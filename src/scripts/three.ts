@@ -31,29 +31,6 @@ class ThreeEngine extends Engine {
     this.scene.background = new THREE.Color("white");
   }
 
-  makeRect(x: number, y: number, size: number, speed: number) {
-    const geometry = new THREE.PlaneGeometry(size, size);
-    const material = new THREE.MeshBasicMaterial({
-      color: 0xffffff,
-      side: THREE.FrontSide,
-      depthTest: false,
-    });
-    const plane = new THREE.Mesh(geometry, material);
-    plane.position.set(x, y, 0);
-    plane.userData["speed"] = speed;
-    this.scene.add(plane);
-
-    // Make the borders of the planes
-    const edges = new THREE.EdgesGeometry(geometry);
-    const line = new THREE.LineSegments(
-      edges,
-      new THREE.LineBasicMaterial({ color: 0x000000 })
-    );
-    line.position.set(x, y, 0);
-    line.userData["speed"] = speed;
-    this.scene.add(line);
-  }
-
   animate() {
     for (let i = 0; i < this.count.value; i++) {
       const element = this.drawElements[i];
@@ -79,31 +56,26 @@ class ThreeEngine extends Engine {
 
     for (let i = 0; i < this.count.value; i++) {
       let element = this.drawElements[i];
-      if (this.renderType.value == "Rect") {
-        const geometry = new THREE.PlaneGeometry(element.width, element.heigh);
-        const material = new THREE.MeshBasicMaterial({
-          color: 0xffffff,
-          side: THREE.FrontSide,
-          depthTest: true,
-        });
-        const plane = new THREE.Mesh(geometry, material);
-        plane.position.set(element.x, element.y, 0);
-        this.scene.add(plane);
-        // Make the borders of the planes
-        const edges = new THREE.EdgesGeometry(geometry);
-        const line = new THREE.LineSegments(
-          edges,
-          new THREE.LineBasicMaterial({ color: 0x000000 })
-        );
-        line.position.set(element.x, element.y, 0);
-        this.scene.add(line);
-        element.obj = new Array();
-        element.obj[0] = plane;
-        element.obj[1] = line;
-      } else if (this.renderType.value == "Image") {
-
-      } else if (this.renderType.value == "Text") {
-      }
+      const geometry = new THREE.PlaneGeometry(element.width, element.heigh);
+      const material = new THREE.MeshBasicMaterial({
+        color: 0xffffff,
+        side: THREE.FrontSide,
+        depthTest: true,
+      });
+      const plane = new THREE.Mesh(geometry, material);
+      plane.position.set(element.x, element.y, 0);
+      this.scene.add(plane);
+      // Make the borders of the planes
+      const edges = new THREE.EdgesGeometry(geometry);
+      const line = new THREE.LineSegments(
+        edges,
+        new THREE.LineBasicMaterial({ color: 0x000000 })
+      );
+      line.position.set(element.x, element.y, 0);
+      this.scene.add(line);
+      element.obj = new Array();
+      element.obj[0] = plane;
+      element.obj[1] = line;
     }
 
     if (this.lastFrame) {
