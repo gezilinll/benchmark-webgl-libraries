@@ -1,0 +1,30 @@
+include /partials/header
+include /partials/footer
+include /partials/count-selector
+
+html
+  head
+    block title
+      title WebGL Libraries Benchmark
+
+    meta(charset="utf-8")
+    meta(http-equiv="X-UA-Compatible" content="IE=edge")
+
+    meta(name="title" content="WebGL Libraries Benchmark")
+    meta(name="description" content="Render multiple moving rectangles to compare a number of WebGL libraries.")
+
+    link(rel="shortcut icon" href="../assets/favicon.ico" type="image/x-icon")
+    link(rel="icon" href="../assets/favicon.ico" type="image/x-icon")
+
+    link(rel="stylesheet" href="../styles/index.css")
+
+  body
+    +header()
+
+    main
+      +count-selector()
+      .meter
+
+    +footer()
+
+    block scripts

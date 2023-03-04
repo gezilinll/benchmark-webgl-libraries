@@ -1,0 +1,52 @@
+@import "./font.css";
+@import "./layout.css";
+
+.count-selector {
+  display: flex;
+  align-items: baseline;
+  margin-bottom: 0.5em;
+}
+
+.count-selector>span {
+  margin-right: 1em;
+  font-size: 1.2em;
+}
+
+.count-selector>a {
+  margin-right: 0.5em;
+}
+
+.count-selector>a.selected {
+  color: #333;
+  border-bottom-color: #fff;
+  cursor: default;
+  pointer-events: none;
+}
+
+.meter>* {
+  box-sizing: content-box;
+}
+
+/*
+TODO: fix Konva to not overwrite canvas styles
+*/
+svg,
+canvas,
+.canvas {
+  margin-top: 1em !important;
+  border: 1px solid #999 !important;
+}
+
+/* dom canvas */
+.canvas {
+  overflow: hidden;
+  position: relative;
+  display: inline-flex;
+}
+
+div.rectangle {
+  display: inline-block;
+  position: absolute;
+  background: white;
+  border: solid 1px;
+}
