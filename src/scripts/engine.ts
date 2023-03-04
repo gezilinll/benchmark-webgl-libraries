@@ -163,7 +163,7 @@ class Engine {
       for (let i = this.drawElements.length; i < this.count.value; i++) {
         const x = Math.floor(Math.random() * this.width);
         const y = Math.floor(Math.random() * this.height);
-        const size = 10 + Math.floor(Math.random() * 40);
+        const size = 10 + Math.floor(Math.random() * 50);
         const speed = 1 + Math.floor(Math.random() * 3);
         let element = new XElement();
         element.x = x;

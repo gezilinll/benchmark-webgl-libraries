@@ -9,6 +9,8 @@ Based on [canvas-engines-comparison](https://github.com/slaylines/canvas-engines
 
 * More libraries
 * More test case
+  * Rect / Image / Text
+
 * More specific comparison
   * PixiJS：add Sprite/SpriteContainer compare with Rect
   * CanvasKit-wasm：add immediately compare with batch
