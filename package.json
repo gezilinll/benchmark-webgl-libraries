@@ -20,6 +20,7 @@
   },
   "devDependencies": {
     "@parcel/transformer-pug": "2.8.3",
+    "@types/three": "^0.149.0",
     "buffer": "^5.5.0",
     "canvaskit-wasm": "^0.38.0",
     "parcel": "^2.8.3",
@@ -28,7 +29,8 @@
     "process": "^0.11.10",
     "pug": "3.0.2",
     "punycode": "^1.4.1",
-    "querystring-es3": "^0.2.1"
+    "querystring-es3": "^0.2.1",
+    "three": "^0.150.1"
   },
   "browserslist": [
     "last 2 Chrome versions"
