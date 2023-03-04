@@ -5,8 +5,8 @@
   "author": "gezilinll",
   "license": "MIT",
   "scripts": {
-    "start": "parcel serve src/pages/pixi.pug --open",
-    "build": "parcel build src/pages/pixi.pug",
+    "start": "parcel serve src/pages/index.pug --open",
+    "build": "parcel build src/pages/index.pug",
     "dev": "yarn build && yarn start",
     "deploy": "yarn build && yarn copy",
     "copy": "source .env && rsync -qazP $DEPLOY_FILES $DEPLOY_TARGET"
