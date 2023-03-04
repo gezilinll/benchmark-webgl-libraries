@@ -12,6 +12,9 @@ Based on [canvas-engines-comparison](https://github.com/slaylines/canvas-engines
 * More specific comparison
   * PixiJS：add Sprite/SpriteContainer compare with Rect
   * CanvasKit-wasm：add immediately compare with batch
+* More control variable
+  * Cache random result to make sure every library use same data to render
+
 * Use newest version of dependencies
 
 ## Tested Libraries

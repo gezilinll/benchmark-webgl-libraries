@@ -2,7 +2,6 @@ import Engine from "./engine";
 import * as PIXI from "pixi.js";
 
 class PixiEngine extends Engine {
-  rects: Array<any> = new Array();
   app: PIXI.Application<PIXI.ICanvas>;
   modeLinks: NodeListOf<Element>;
   renderMode: { index: number; value: string; };
@@ -15,7 +14,6 @@ class PixiEngine extends Engine {
 
     // support Hi-DPI
     // PIXI.settings.RESOLUTION = window.devicePixelRatio
-    this.rects = [];
     this.app = new PIXI.Application({
       width: this.width,
       height: this.height,
@@ -46,13 +44,13 @@ class PixiEngine extends Engine {
 
   onTick() {
     for (let i = 0; i < this.count.value; i++) {
-      const rect = this.rects[i];
-      if (rect.x + rect.size / 2 < 0) {
-        rect.x = this.width + rect.size / 2;
+      const element = this.drawElements[i];
+      if (element.x + element.width <= 0) {
+        element.x = this.width;
       } else {
-        rect.x -= rect.speed;
+        element.x -= element.speed;
       }
-      rect.el.position.x = rect.x;
+      element.obj.position.x = element.x;
     }
 
     this.meter.tick();
@@ -60,22 +58,19 @@ class PixiEngine extends Engine {
 
   renderUseSprite() {
     for (let i = 0; i < this.count.value; i++) {
-      const x = Math.random() * this.width;
-      const y = Math.random() * this.height;
-      const size = 10 + Math.random() * 40;
-      const speed = 1 + Math.random();
 
+      let element = this.drawElements[i];
       const rect = new PIXI.Graphics();
       rect.lineStyle(1, 0x000000, 1);
       rect.beginFill(0xffffff);
-      rect.drawRect(-size / 2, -size / 2, size, size);
+      rect.drawRect(-element.width / 2, -element.heigh / 2, element.width, element.heigh);
       rect.endFill();
 
       var texture = this.app.renderer.generateTexture(rect);
       var sprite = new PIXI.Sprite(texture);
-      sprite.position.set(x, y);
+      sprite.position.set(element.x, element.y);
       this.app.stage.addChild(sprite);
-      this.rects[i] = { x, y, size, speed, el: sprite };
+      element.obj = sprite;
     }
 
     this.app.ticker.add(this.onTick, this);
@@ -91,47 +86,39 @@ class PixiEngine extends Engine {
     });
     this.app.stage.addChild(spritesContainer);
     for (let i = 0; i < this.count.value; i++) {
-      const x = Math.random() * this.width;
-      const y = Math.random() * this.height;
-      const size = 10 + Math.random() * 40;
-      const speed = 1 + Math.random();
-
+      let element = this.drawElements[i];
       const rect = new PIXI.Graphics();
       rect.lineStyle(1, 0x000000, 1);
       rect.beginFill(0xffffff);
-      rect.drawRect(-size / 2, -size / 2, size, size);
+      rect.drawRect(-element.width / 2, -element.heigh / 2, element.width, element.heigh);
       rect.endFill();
 
       var texture = this.app.renderer.generateTexture(rect);
       var sprite = new PIXI.Sprite(texture);
-      sprite.position.set(x, y);
+      sprite.position.set(element.x, element.y);
       spritesContainer.addChild(sprite);
-      this.rects[i] = { x, y, size, speed, el: sprite };
+      element.obj = sprite;
     }
   }
 
   renderUseRect() {
     for (let i = 0; i < this.count.value; i++) {
-      const x = Math.random() * this.width;
-      const y = Math.random() * this.height;
-      const size = 10 + Math.random() * 40;
-      const speed = 1 + Math.random();
-
+      let element = this.drawElements[i];
       const rect = new PIXI.Graphics();
       rect.lineStyle(1, 0x000000, 1);
       rect.beginFill(0xffffff);
-      rect.drawRect(-size / 2, -size / 2, size, size);
+      rect.drawRect(-element.width / 2, -element.heigh / 2, element.width, element.heigh);
       rect.endFill();
-      rect.position.set(x, y);
+      rect.position.set(element.x, element.y);
       this.app.stage.addChild(rect);
-      this.rects[i] = { x, y, size, speed, el: rect };
+      element.obj = rect;
     }
   }
 
   render() {
     this.app.ticker.remove(this.onTick, this);
     this.app.stage.removeChildren();
-    this.rects = [];
+    this.initDrawElements();
     if (this.renderMode.value == "SpriteContainer") {
       this.renderUseSpriteContainer();
     } else if (this.renderMode.value == "Sprite") {

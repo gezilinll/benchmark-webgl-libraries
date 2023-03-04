@@ -1,5 +1,14 @@
 import 'fpsmeter'
 
+class XElement {
+  x: number = 0;
+  y: number = 0;
+  speed: number = 0;
+  width: number = 0;
+  heigh: number = 0;
+  obj: any = undefined;
+}
+
 class Engine {
   content: any;
   meterContainer: HTMLElement;
@@ -10,13 +19,14 @@ class Engine {
   count: { index: number; value: number; };
   meter!: any;
 
+  drawElements: Array<XElement> = new Array();
+
   constructor() {
     this.content = document.querySelector("main")!;
     this.meterContainer = this.content.querySelector(".meter")!;
     this.countLinks = this.content.querySelectorAll(".count-selector > a");
-
     this.width = Math.min(this.content.clientWidth, 1000);
-    this.height = this.content.clientHeight * 0.75;
+    this.height = this.content.clientHeight;
     this.count = { index: 1, value: 1000 };
 
     this.initFpsmeter();
@@ -89,6 +99,30 @@ class Engine {
         ml.classList.add("disabled");
       }
     });
+  }
+
+  initDrawElements() {
+    this.drawElements = [];
+    let localElements = localStorage.getItem("drawElements");
+    if (localElements) {
+      this.drawElements = JSON.parse(localElements);
+    }
+    if (this.drawElements.length < this.count.value) {
+      for (let i = this.drawElements.length; i < this.count.value; i++) {
+        const x = Math.floor(Math.random() * this.width);
+        const y = Math.floor(Math.random() * this.height);
+        const size = 10 + Math.floor(Math.random() * 40);
+        const speed = 1 + Math.floor(Math.random() * 3);
+        let element = new XElement();
+        element.x = x;
+        element.y = y;
+        element.speed = speed;
+        element.width = size;
+        element.heigh = size;
+        this.drawElements[i] = element;
+      }
+    }
+    localStorage.setItem("drawElements", JSON.stringify(this.drawElements));
   }
 
   render() { }

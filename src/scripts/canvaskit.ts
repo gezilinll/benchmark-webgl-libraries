@@ -10,7 +10,6 @@ class CanvasKitEngine extends Engine {
   surface: any;
   strokePaint: any;
   fillPaint: any;
-  rects: Array<any> = new Array();
   request: number = 0;
   modeLinks: NodeListOf<Element>;
   renderMode: { index: number; value: string; };
@@ -60,23 +59,21 @@ class CanvasKitEngine extends Engine {
   }
 
   animate() {
-    const rects = this.rects;
     const canvas = this.surface.getCanvas();
     for (let i = 0; i < this.count.value; i++) {
-      const r = rects[i];
-      r.x -= r.speed;
-      if (r.x + r.size < 0) {
-        r.x = this.width + r.size;
+      const element = this.drawElements[i];
+      if (element.x + element.width <= 0) {
+        element.x = this.width;
+      } else {
+        element.x -= element.speed;
       }
-      canvas.drawRect4f(r.x, r.y, r.x + r.size, r.y + r.size, this.strokePaint);
-      canvas.drawRect4f(r.x, r.y, r.x + r.size, r.y + r.size, this.fillPaint);
+      canvas.drawRect4f(element.x, element.y, element.x + element.width, element.y + element.heigh, this.strokePaint);
+      canvas.drawRect4f(element.x, element.y, element.x + element.width, element.y + element.heigh, this.fillPaint);
       if (this.renderMode.value == "Immediately") {
-        console.log("Immediately");
         this.surface.flush();
       }
     }
     if (this.renderMode.value == "Batch") {
-      console.log("Batch");
       this.surface.flush();
     }
     this.meter.tick();
@@ -88,17 +85,7 @@ class CanvasKitEngine extends Engine {
     // clear the canvas
     this.surface.getCanvas().clear(this.CanvasKit.WHITE);
     this.cancelAnimationFrame(this.request);
-
-    // rectangle creation
-    this.rects = [];
-    for (let i = 0; i < this.count.value; i++) {
-      const x = Math.random() * this.width;
-      const y = Math.random() * this.height;
-      const size = 10 + Math.random() * 40;
-      const speed = 1 + Math.random();
-      this.rects[i] = { x, y, size, speed };
-    }
-
+    this.initDrawElements();
     this.request = window.requestAnimationFrame(() => this.animate());
   }
 }
