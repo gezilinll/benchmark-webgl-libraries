@@ -11,15 +11,12 @@ class CanvasKitEngine extends Engine {
   strokePaint: any;
   fillPaint: any;
   request: number = 0;
-  modeLinks: NodeListOf<Element>;
-  renderMode: { index: number; value: string; };
 
   constructor() {
     super();
 
     this.renderMode = { index: 1, value: "Batch" };
-    this.modeLinks = this.content.querySelectorAll(".render-mode-selector > a");
-    this.initCanvasKitSettings();
+    this.initRenderModeSettings();
 
     this.canvas = document.createElement("canvas");
     this.canvas.width = this.width;
@@ -27,21 +24,6 @@ class CanvasKitEngine extends Engine {
     this.content.appendChild(this.canvas);
   }
 
-  initCanvasKitSettings() {
-    this.modeLinks.forEach((link: any, index) => {
-      this.modeLinks[this.renderMode.index].classList.toggle("selected", true);
-
-      link.addEventListener("click", (event: any) => {
-        console.log("addEventListener click");
-        event.preventDefault();
-        event.stopPropagation();
-
-        this.modeLinks[this.renderMode.index].classList.toggle("selected", false);
-        this.renderMode = { index: index, value: link.innerText };
-        this.modeLinks[this.renderMode.index].classList.toggle("selected", true);
-      });
-    });
-  }
 
   async init() {
     this.CanvasKit = await CanvasKitInit({
@@ -67,8 +49,10 @@ class CanvasKitEngine extends Engine {
       } else {
         element.x -= element.speed;
       }
-      canvas.drawRect4f(element.x, element.y, element.x + element.width, element.y + element.heigh, this.strokePaint);
-      canvas.drawRect4f(element.x, element.y, element.x + element.width, element.y + element.heigh, this.fillPaint);
+      if (this.renderType.value == "Rect") {
+        canvas.drawRect4f(element.x, element.y, element.x + element.width, element.y + element.heigh, this.strokePaint);
+        canvas.drawRect4f(element.x, element.y, element.x + element.width, element.y + element.heigh, this.fillPaint);
+      }
       if (this.renderMode.value == "Immediately") {
         this.surface.flush();
       }

@@ -1,6 +1,7 @@
 include /partials/header
 include /partials/footer
 include /partials/count-selector
+include /partials/render-type-selector
 
 html
   head
@@ -25,6 +26,7 @@ html
       +count-selector()
       .meter
       block renderMode
+      +render-type-selector()
 
     +footer()
 

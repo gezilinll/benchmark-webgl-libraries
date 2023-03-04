@@ -17,6 +17,10 @@ class Engine {
   cancelAnimationFrame: any;
   countLinks: NodeListOf<Element>;
   count: { index: number; value: number; };
+  renderModeLinks: NodeListOf<Element>;
+  renderMode: { index: number; value: string; };
+  renderTypeLinks: NodeListOf<Element>;
+  renderType: { index: number; value: string; };
   meter!: any;
 
   drawElements: Array<XElement> = new Array();
@@ -24,10 +28,14 @@ class Engine {
   constructor() {
     this.content = document.querySelector("main")!;
     this.meterContainer = this.content.querySelector(".meter")!;
+    this.count = { index: 1, value: 1000 };
     this.countLinks = this.content.querySelectorAll(".count-selector > a");
     this.width = Math.min(this.content.clientWidth, 1000);
     this.height = this.content.clientHeight;
-    this.count = { index: 1, value: 1000 };
+    this.renderModeLinks = this.content.querySelectorAll(".render-mode-selector > a");
+    this.renderMode = { index: 1, value: "Error" };
+    this.renderTypeLinks = this.content.querySelectorAll(".render-type-selector > a");
+    this.renderType = { index: 0, value: "Rect" };
 
     this.initFpsmeter();
     this.initSettings();
@@ -69,9 +77,10 @@ class Engine {
     } else {
       this.count = { index: 1, value: 1000 };
     }
-
+    if (this.count.index < 0 || this.count.index >= 5) {
+      this.count = { index: 1, value: 1000 };
+    }
     localStorage.setItem("count", JSON.stringify(this.count));
-
     this.countLinks.forEach((link: any, index) => {
       this.countLinks[this.count.index].classList.toggle("selected", true);
 
@@ -84,6 +93,49 @@ class Engine {
         this.countLinks[this.count.index].classList.toggle("selected", true);
 
         localStorage.setItem("count", JSON.stringify(this.count));
+
+        this.render();
+      });
+    });
+
+    let localRenderType = localStorage.getItem("renderType");
+    if (localRenderType) {
+      this.renderType = JSON.parse(localRenderType);
+    } else {
+      this.renderType = { index: 1, value: "Rect" };
+    }
+    if (this.renderType.index < 0 || this.count.index >= 3) {
+      this.renderType = { index: 1, value: "Rect" };
+    }
+    this.renderTypeLinks.forEach((link: any, index) => {
+      this.renderTypeLinks[this.renderType.index].classList.toggle("selected", true);
+
+      link.addEventListener("click", (event: any) => {
+        event.preventDefault();
+        event.stopPropagation();
+
+        this.renderTypeLinks[this.renderType.index].classList.toggle("selected", false);
+        this.renderType = { index: index, value: link.innerText };
+        this.renderTypeLinks[this.renderType.index].classList.toggle("selected", true);
+
+        localStorage.setItem("renderType", JSON.stringify(this.renderType));
+
+        this.render();
+      });
+    });
+  }
+
+  initRenderModeSettings() {
+    this.renderModeLinks.forEach((link: any, index) => {
+      this.renderModeLinks[this.renderMode.index].classList.toggle("selected", true);
+
+      link.addEventListener("click", (event: any) => {
+        event.preventDefault();
+        event.stopPropagation();
+
+        this.renderModeLinks[this.renderMode.index].classList.toggle("selected", false);
+        this.renderMode = { index: index, value: link.innerText };
+        this.renderModeLinks[this.renderMode.index].classList.toggle("selected", true);
 
         this.render();
       });

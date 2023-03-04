@@ -3,14 +3,11 @@ import * as PIXI from "pixi.js";
 
 class PixiEngine extends Engine {
   app: PIXI.Application<PIXI.ICanvas>;
-  modeLinks: NodeListOf<Element>;
-  renderMode: { index: number; value: string; };
   constructor() {
     super();
 
     this.renderMode = { index: 2, value: "SpriteContainer" };
-    this.modeLinks = this.content.querySelectorAll(".render-mode-selector > a");
-    this.initPixiSettings();
+    this.initRenderModeSettings();
 
     // support Hi-DPI
     // PIXI.settings.RESOLUTION = window.devicePixelRatio
@@ -25,23 +22,6 @@ class PixiEngine extends Engine {
     this.app.view.style!.height = this.height + "px";
   }
 
-  initPixiSettings() {
-    this.modeLinks.forEach((link: any, index) => {
-      this.modeLinks[this.renderMode.index].classList.toggle("selected", true);
-
-      link.addEventListener("click", (event: any) => {
-        event.preventDefault();
-        event.stopPropagation();
-
-        this.modeLinks[this.renderMode.index].classList.toggle("selected", false);
-        this.renderMode = { index: index, value: link.innerText };
-        this.modeLinks[this.renderMode.index].classList.toggle("selected", true);
-
-        this.render();
-      });
-    });
-  }
-
   onTick() {
     for (let i = 0; i < this.count.value; i++) {
       const element = this.drawElements[i];
@@ -50,7 +30,9 @@ class PixiEngine extends Engine {
       } else {
         element.x -= element.speed;
       }
-      element.obj.position.x = element.x;
+      if (this.renderType.value == "Rect") {
+        element.obj.position.x = element.x;
+      }
     }
 
     this.meter.tick();
