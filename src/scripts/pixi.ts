@@ -10,7 +10,7 @@ class PixiEngine extends Engine {
     super();
 
     this.renderMode = { index: 2, value: "SpriteContainer" };
-    this.modeLinks = this.content.querySelectorAll(".pixi-selector > a");
+    this.modeLinks = this.content.querySelectorAll(".render-mode-selector > a");
     this.initPixiSettings();
 
     // support Hi-DPI

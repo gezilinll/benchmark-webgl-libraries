@@ -1,0 +1,11 @@
+extends /layouts/main.pug
+include /partials/canvaskit-selector
+
+block title
+  title canvaskit-wasm — WebGL Libraries Benchmark
+
+block main 
+  +canvaskit-selector()
+
+block scripts
+  script(type="module" src="../scripts/canvaskit.ts")
