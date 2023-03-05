@@ -3,6 +3,7 @@ import Engine from "./engine";
    but decrease the size of dist/konva.[hash].js from 460K to 260K. */
 import Konva from "konva/lib/Core";
 import { Rect } from "konva/lib/shapes/Rect";
+import { Text } from "konva/lib/shapes/Text";
 
 class KonvaEngine extends Engine {
   stage: any;
@@ -32,25 +33,46 @@ class KonvaEngine extends Engine {
       draggable: false,
     });
     this.stage.add(layer);
-    const template = new Rect({
-      fill: "white",
-      stroke: "black",
-      strokeWidth: 1,
-      listening: false,
-      draggable: false,
-      shadowForStrokeEnabled: false,
-    });
-    for (let i = 0; i < this.count.value; i++) {
-      const element = this.drawElements[i];
-      const rectangle = template.clone({
-        width: element.width,
-        height: element.heigh,
-        x: element.x,
-        y: element.y,
+    if (this.renderType.value == "Rect" || this.renderType.value == "Image") {
+      const template = new Rect({
+        fill: "white",
+        stroke: "black",
+        strokeWidth: 1,
+        listening: false,
+        draggable: false,
+        shadowForStrokeEnabled: false,
       });
-      element.obj = rectangle;
-      layer.add(rectangle);
+      for (let i = 0; i < this.count.value; i++) {
+        const element = this.drawElements[i];
+        const rectangle = template.clone({
+          width: element.width,
+          height: element.heigh,
+          x: element.x,
+          y: element.y,
+        });
+        element.obj = rectangle;
+        layer.add(rectangle);
+      }
+    } else if (this.renderType.value == "Text") {
+      const template = new Text({
+        x: 0,
+        y: 0,
+        text: 'Simple Text',
+        fontSize: 12,
+        fontFamily: 'Calibri',
+        fill: 'black',
+      });
+      for (let i = 0; i < this.count.value; i++) {
+        const element = this.drawElements[i];
+        const text = template.clone({
+          x: element.x,
+          y: element.y,
+        });
+        element.obj = text;
+        layer.add(text);
+      }
     }
+
     layer.draw();
 
     let draw = () => {

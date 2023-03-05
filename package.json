@@ -7,6 +7,7 @@
   "scripts": {
     "start": "parcel serve src/pages/index.pug --open",
     "build": "parcel build src/pages/index.pug",
+    "build:pages": "parcel build src/pages/index.pug --public-url ./",
     "dev": "yarn build && yarn start",
     "deploy": "yarn build && yarn copy",
     "copy": "source .env && rsync -qazP $DEPLOY_FILES $DEPLOY_TARGET"

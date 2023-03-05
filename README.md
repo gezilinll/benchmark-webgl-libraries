@@ -26,11 +26,11 @@ Based on [canvas-engines-comparison](https://github.com/slaylines/canvas-engines
 
 FPS of render 10000 elements
 
-| Type/Library | Pixi.js                                | CanvasKit | Context2D | Three.js         | Babylon.js       | Fabric.js | Konva.js | DOM  |
-| ------------ | -------------------------------------- | --------- | --------- | ---------------- | ---------------- | --------- | -------- | ---- |
-| Rect         | 23: Graphics<br />60: SpiriteContainer | 30        | 27        | 10(optimizable?) | 13(optimizable?) | 10        | 23       | 11   |
-| Image        | 20                                     | 30        | 31        |                  |                  |           |          |      |
-| Text         | 10: Text<br />60: SpiriteContainer     | 27        | 25        |                  |                  |           |          |      |
+| Type/Library | Pixi.js                                | CanvasKit | Context2D | Konva.js | Three.js         | Babylon.js       | Fabric.js | DOM  |
+| ------------ | -------------------------------------- | --------- | --------- | -------- | ---------------- | ---------------- | --------- | ---- |
+| Rect         | 23: Graphics<br />60: SpiriteContainer | 30        | 27        | 23       | 10(optimizable?) | 13(optimizable?) | 10        | 11   |
+| Image        | 20                                     | 30        | 31        |          |                  |                  |           |      |
+| Text         | 10: Text<br />60: SpiriteContainer     | 27        | 25        | 15       |                  |                  |           |      |
 
 ## Quick Start
 
