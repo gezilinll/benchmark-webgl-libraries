@@ -1101,6 +1101,11 @@ babel-walk@3.0.0-canary-5:
   dependencies:
     "@babel/types" "^7.9.6"
 
+babylonjs@^5.49.0:
+  version "5.49.0"
+  resolved "https://registry.yarnpkg.com/babylonjs/-/babylonjs-5.49.0.tgz#06d07881c94da3e6758ceed90c9d2f045b8b77c7"
+  integrity sha512-yCaiz+eDcbFojUS8cdsgQFGRYO5Nj7PjSs2eEVKwlIOqheeMJLXVyr01pJJ74rbMq1MPp9T8eZDrBs7Cndm8Rw==
+
 balanced-match@^1.0.0:
   version "1.0.2"
   resolved "https://registry.npmjs.org/balanced-match/-/balanced-match-1.0.2.tgz"
