@@ -7,7 +7,9 @@ Based on [canvas-engines-comparison](https://github.com/slaylines/canvas-engines
 
 # What's different
 
-* More libraries
+* More comparison
+  * CanvasRenderingContext2D / Babylon.js
+
 * More test case
   * Rect / Image / Text
 
@@ -17,6 +19,7 @@ Based on [canvas-engines-comparison](https://github.com/slaylines/canvas-engines
 * More control variable
   * Cache random result to make sure every library use same data to render
 
+* Use TypeScript
 * Use newest version of dependencies
 
 ## Tested Libraries
